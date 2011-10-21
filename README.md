@@ -15,11 +15,8 @@ Create color bar charts in the terminal using node.js!
         step: 4
     });
 
-    chart.addBar(3); // default color to blue
-    chart.addBar(9);
-    chart.addBar(13);
-    chart.addBar(15);
-    chart.adddBar(16);
+    chart.addBar(3, 'red');
+    chart.addBar(9).addBar(13).addBar(15).addBar(16);
     chart.draw();    
 
 ## API

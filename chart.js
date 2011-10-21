@@ -28,6 +28,7 @@ var Chart = module.exports = function(config) {
 
 Chart.prototype.addBar = function(size, color) {
     this.bars.push(new Bar(this, size, color));
+    return this;
 };
 
 Chart.prototype.draw = function() {
