@@ -6,7 +6,8 @@ var defaults = {
     width: 80,
     height: 40,
     step: 4,
-    lmargin: 10
+    lmargin: 10,
+    direction: 'y'
 };
 
 var Chart = module.exports = function(config) {
@@ -17,7 +18,7 @@ var Chart = module.exports = function(config) {
     }
     this.xlabel = config.xlabel;
     this.ylabel = config.ylabel;
-    this.direction = config.direction;
+    this.direction = config.direction || defaults.direction;
     this.width = config.width || defaults.width;
     this.height = config.height || defaults.height;
     this.lmargin = config.lmargin || defaults.lmargin;

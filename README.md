@@ -2,6 +2,28 @@
 
 Create color bar charts in the terminal using node.js!
 
+## Example
+
+    var Chart = require('cli-chart');
+    var chart = new Chart({
+        xlabel: 'snausages/hr',
+        ylabel: 'dog\nhappiness',
+        direction: 'y',
+        width: 80,
+        height: 20,
+        lmargin: 15,
+        step: 4
+    });
+
+    chart.addBar(3); // default color to blue
+    chart.addBar(9);
+    chart.addBar(13);
+    chart.addBar(15);
+    chart.adddBar(16);
+    chart.draw();    
+
+## API
+
 ## License
 
 ### The MIT License (MIT)
