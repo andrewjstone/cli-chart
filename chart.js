@@ -76,5 +76,5 @@ Chart.prototype.draw = function() {
         this.bars[i].draw();
         charm.pop();
     }
-    charm.write('\n');
+    charm.write('\n\n\n');
 };
