@@ -1,0 +1,23 @@
+{
+    "name": "cli-chart",
+    "description": "Ansi color Bar Charts in your terminal with node.js!",
+    "version": "0.1.0",
+    "author": "Andrew J. Stone",
+    "repository": {
+        "type": "git", 
+        "url": "http://github.com/andrewjstone/cli-chart.git"
+    },
+    "main": "./chart.js",
+    "dependencies": {
+       "charm": "*"
+     },
+     "license": "MIT/X11",
+     "keywords": [
+         "terminal",
+         "ansi",
+         "chart",
+         "bar",
+         "console",
+         "graph"
+     ]
+}
