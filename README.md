@@ -4,6 +4,8 @@ Create color bar charts in the terminal using node.js!
 
 ## Example
 
+[dog happiness](https://github.com/andrewjstone/cli-chart/blob/master/dog-happiness-chart.png)
+
     var Chart = require('cli-chart');
     var chart = new Chart({
         xlabel: 'snausages/hr',
@@ -20,6 +22,7 @@ Create color bar charts in the terminal using node.js!
     chart.draw();    
 
 ## API
+
 
 ## License
 
