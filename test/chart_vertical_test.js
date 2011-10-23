@@ -7,3 +7,4 @@ var drawbar = function() {
 };
 
 drawbar();
+process.exit();

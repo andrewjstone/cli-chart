@@ -46,7 +46,6 @@ var Chart = module.exports = function(config) {
 
 Chart.prototype.addBar = function(size, color) {
     var scale = this.direction === 'y' ? this.yscale : this.xscale;
-    console.log("size*scale = "+Math.round(size*scale));
     this.bars.push(new Bar(this, Math.round(size*scale), color));
     return this;
 };
@@ -87,16 +86,18 @@ Chart.prototype.draw = function() {
         charm.pop();
         charm.up(2);
     }
-
+    
     for (var i = 0; i < this.bars.length; i++) {
         if (this.direction === 'x') {
-            charm.down(this.step);
+            if (i != 0) charm.up(this.step);
         } else {
-            charm.right(this.step);
+            if (i != 0) charm.right(this.step);
         }
         charm.push();
         this.bars[i].draw();
         charm.pop();
     }
+    if (this.direction === 'x') charm.down(this.step*this.bars.length+1);
     charm.write('\n\n\n');
+    if (this.direction === 'y') charm.write('\n');
 };
