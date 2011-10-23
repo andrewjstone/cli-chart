@@ -25,9 +25,10 @@ chart.draw();
 ````
 
 ## constructor
-    var chart = new Chart({options});
+    var config = {};
+    var chart = new Chart(config);
 
-config:
+config attributes:
 
  * **xlabel**: string - the label for the x axis
      * default: undefined
