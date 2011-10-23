@@ -7,8 +7,12 @@ var defaults = {
     height: 40,
     step: 4,
     lmargin: 10,
-    direction: 'y'
+    direction: 'y',
+    xmin: 0,
+    ymin: 0
 };
+defaults.xmax = defaults.width;
+defaults.ymax = defaults.height;
 
 var Chart = module.exports = function(config) {
     var charm = this.charm = config.charm;
@@ -24,10 +28,26 @@ var Chart = module.exports = function(config) {
     this.lmargin = config.lmargin || defaults.lmargin;
     this.step = config.step || defaults.step;
     this.bars = [];
+    this.xmin = config.xmin || defaults.xmin;
+    this.xmax = config.xmax || defaults.xmax;
+    this.ymin = config.ymin || defaults.ymin;
+    this.ymax = config.ymax ||  defaults.ymax;
+    this.yscale = 1;
+    this.xscale = 1;
+
+    if (this.ymin || this.ymax != defaults.height) {
+        this.yscale = this.height/(this.ymax - this.ymin);
+    }
+
+    if (this.xmin || this.xmax != defaults.width) {
+        this.xscale = this.width/(this.ymax - this.ymin);
+    }
 };
 
 Chart.prototype.addBar = function(size, color) {
-    this.bars.push(new Bar(this, size, color));
+    var scale = this.direction === 'y' ? this.yscale : this.xscale;
+    console.log("size*scale = "+Math.round(size*scale));
+    this.bars.push(new Bar(this, Math.round(size*scale), color));
     return this;
 };
 
