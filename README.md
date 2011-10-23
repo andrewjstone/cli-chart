@@ -24,7 +24,35 @@ chart.addBar(9).addBar(13).addBar(15).addBar(16);
 chart.draw();    
 ````
 
-## API
+## constructor
+    var chart = new Chart({options});
+
+config:
+
+ * xlabel: string - the label for the x axis 
+ * ylabel: string - the label for the y axis
+ * direction: string 'x' || 'y' - defaults to 'y'
+ * width: number - width of chart in characters - default: 80
+ * height: number - height of chart in characters - default: 20
+ * lmargin: number - margin to the left of the chart - default: 10
+ * step: number - the distance in characters between bars - default: 4
+ * xmin: number - the minimum of the x-axis - default: 0
+ * xmax: number - the maxmimum of the x-axis - default: width
+ * ymin: number - the minimum of the y-axis - default: 0
+ * ymax: number - the maxmimum of the y-axis - default: height
+ 
+
+## methods
+
+#### chart.addBar(size, color);
+Add a bar at the next position, which is 'chart.step' spaces away on the axis perpendicular to 'chart.direction'.
+
+  * size - size of the bar in nominal units
+  * color - Ansi color string - 'white','red','blue', etc...
+
+#### chart.draw();
+Draw the chart consisting of the bars created with chart.addBar().
+
 
 
 ## License
