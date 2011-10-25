@@ -40,7 +40,7 @@ var Chart = module.exports = function(config) {
     }
 
     if (this.xmin || this.xmax != defaults.width) {
-        this.xscale = this.width/(this.ymax - this.ymin);
+        this.xscale = this.width/(this.xmax - this.xmin);
     }
 };
 
@@ -50,43 +50,77 @@ Chart.prototype.addBar = function(size, color) {
     return this;
 };
 
-Chart.prototype.draw = function() {
+Chart.prototype.drawAxes = function() {
     var charm = this.charm;
-
-    if (this.height) {
-        for (var i = 0; i < this.height; i++) {
-            charm.write('\n');
-            if (this.ylabel) {
-                charm.right(this.lmargin);
-                charm.write('|');
-            }
-        }
+    var i = 0;
+    // draw y axis
+    for (i = 0; i < this.height; i++) {
+        charm.write('\n');
+        charm.right(this.lmargin);
+        charm.write('|');
     }
-    charm.left(this.lmargin);
+
+    // At the bottom of the terminal weird things happen with vertical spacing. 
+    // Scroll a couple lines down then come back up before drawing the bottom axis
+    charm.write('\n\n');
+    charm.up(2);
+    charm.right(this.lmargin+1);
+    
+    // The cursor is now at the origin of the graph
+
+    // draw x axis
+    charm.push();
+    charm.write('\n');
+    charm.right(this.lmargin);
+    for (i = this.lmargin-1; i < this.width; i++) {
+        charm.write('-');
+    }
+    charm.pop();
+};
+
+Chart.prototype.labelAxes = function() {
+    var charm = this.charm;
+    // label y axis
     if (this.ylabel) {
         charm.push();
+        var yminstr = String(this.ymin);
+        charm.left(yminstr.length+2);
+        charm.write(yminstr);
+        // move all the way to the left of the screen on the x axis
+        charm.left(this.lmargin-2);
+        
+        // move half way up the y axis
         charm.up(this.height/2);
         charm.write(this.ylabel);
+        charm.up(this.height/2);
+
+        // move to the top of the y axis
+        var ymaxstr = String(this.ymax);
+        charm.left(ymaxstr.length);
+        charm.write(ymaxstr);
         charm.pop();
     }
-    if (this.lmargin) {
-        charm.right(this.lmargin);
-    }
+
+    // label x axis
     if (this.xlabel) {
-        var pos = Math.floor(this.lmargin + this.step*this.bars.length/2 - this.xlabel.length/2);
         charm.push();
-        charm.write('\n');
-        charm.right(this.lmargin);
-        for (var i = this.lmargin-1; i < this.width; i++) {
-            charm.write('-');
-        }
-        charm.write('\n');
-        charm.right(pos);
+        charm.write('\n\n');
+        charm.right(this.lmargin+1);
+        charm.write(String(this.xmin));
+        charm.left(this.lmargin+1);
+        charm.right(this.width/2);
         charm.write(this.xlabel);
+        charm.right(this.width/2-this.lmargin);
+        charm.write(String(this.xmax));
         charm.pop();
-        charm.up(2);
+
+        // put the cursor back at the origin of the graph.
+//        charm.up(2);
     }
-    
+};
+
+Chart.prototype.drawBars = function() {
+    var charm = this.charm;
     for (var i = 0; i < this.bars.length; i++) {
         if (this.direction === 'x') {
             if (i != 0) charm.up(this.step);
@@ -100,4 +134,11 @@ Chart.prototype.draw = function() {
     if (this.direction === 'x') charm.down(this.step*this.bars.length+1);
     charm.write('\n\n\n');
     if (this.direction === 'y') charm.write('\n');
+};
+
+Chart.prototype.draw = function() {
+    this.drawAxes();
+    this.labelAxes();
+    this.drawBars();
+        this.charm.write('\n\n');
 };
