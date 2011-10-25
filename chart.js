@@ -114,8 +114,6 @@ Chart.prototype.labelAxes = function() {
         charm.write(String(this.xmax));
         charm.pop();
 
-        // put the cursor back at the origin of the graph.
-//        charm.up(2);
     }
 };
 
