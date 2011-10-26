@@ -8,11 +8,11 @@ var Bar = module.exports = function(chart, size, color) {
     this.color = color || defaults.color;
 };
 
-Bar.prototype.draw = function() {
+Bar.prototype.draw = function(scale) {
     var charm = this.chart.charm;
     var dir = this.chart.direction;
     charm.background(this.color);
-    for (var i = 0; i < this.size; i++) {
+    for (var i = 0; i < Math.round(this.size*scale); i++) {
         if (dir === 'x') {
             charm.write(' ');
         } else {

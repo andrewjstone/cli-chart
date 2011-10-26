@@ -11,8 +11,6 @@ var defaults = {
     xmin: 0,
     ymin: 0
 };
-defaults.xmax = defaults.width;
-defaults.ymax = defaults.height;
 
 var Chart = module.exports = function(config) {
     var charm = this.charm = config.charm;
@@ -29,24 +27,42 @@ var Chart = module.exports = function(config) {
     this.step = config.step || defaults.step;
     this.bars = [];
     this.xmin = config.xmin || defaults.xmin;
-    this.xmax = config.xmax || defaults.xmax;
+    this.xmax = config.xmax || this.width;
     this.ymin = config.ymin || defaults.ymin;
-    this.ymax = config.ymax ||  defaults.ymax;
-    this.yscale = 1;
-    this.xscale = 1;
+    this.ymax = config.ymax || this.height;
+    this.max_size = 0;
+};
 
-    if (this.ymin || this.ymax != defaults.height) {
-        this.yscale = this.height/(this.ymax - this.ymin);
+// min and max here must be in the same units as data. This is different from 
+// xmin, xmax, ymin, ymax in that those are for labels and may be in different units.
+Chart.prototype.bucketize = function(data, min, max) {
+    var numBuckets = 0;
+    if (this.direction === 'x') {
+        numBuckets = Math.floor(this.height/this.step);
+    } else {
+        numBuckets = Math.floor(this.width/this.step);
     }
-
-    if (this.xmin || this.xmax != defaults.width) {
-        this.xscale = this.width/(this.xmax - this.xmin);
+    var bucketWidth = (max - min)/numBuckets;
+    data.sort(function(a, b) {
+        return a - b;
+    });
+    var size = 0;
+    var bucket_ct = 0;
+    var max_size = 0;
+    for (var i = 0; i < data.length; i++) {
+        if (data[i] > min+bucketWidth*(bucket_ct+1)) {
+            this.addBar(size);
+            bucket_ct++;
+            size = 0;
+        }
+        size++;
     }
+    this.addBar(size);
 };
 
 Chart.prototype.addBar = function(size, color) {
-    var scale = this.direction === 'y' ? this.yscale : this.xscale;
-    this.bars.push(new Bar(this, Math.round(size*scale), color));
+    if (size > this.max_size) this.max_size = size;
+    this.bars.push(new Bar(this, size, color));
     return this;
 };
 
@@ -65,14 +81,14 @@ Chart.prototype.drawAxes = function() {
     charm.write('\n\n');
     charm.up(2);
     charm.right(this.lmargin+1);
-    
-    // The cursor is now at the origin of the graph
+        // The cursor is now at the origin of the graph
 
     // draw x axis
     charm.push();
+
     charm.write('\n');
     charm.right(this.lmargin);
-    for (i = this.lmargin-1; i < this.width; i++) {
+    for (i = this.lmargin-1; i < this.width+this.lmargin-1; i++) {
         charm.write('-');
     }
     charm.pop();
@@ -95,7 +111,7 @@ Chart.prototype.labelAxes = function() {
         charm.up(this.height/2);
 
         // move to the top of the y axis
-        var ymaxstr = String(this.ymax);
+        var ymaxstr = this.direction === 'y' ? String(this.max_size) : String(this.ymax);
         charm.left(ymaxstr.length);
         charm.write(ymaxstr);
         charm.pop();
@@ -107,17 +123,24 @@ Chart.prototype.labelAxes = function() {
         charm.write('\n\n');
         charm.right(this.lmargin+1);
         charm.write(String(this.xmin));
-        charm.left(this.lmargin+1);
-        charm.right(this.width/2);
+        charm.right(this.width/2 - String(this.xmin).length);
         charm.write(this.xlabel);
-        charm.right(this.width/2-this.lmargin);
-        charm.write(String(this.xmax));
+        charm.right(this.width/2 - this.xlabel.length);
+        var xmaxstr = this.direction === 'x' ? String(this.max_size) : String(this.xmax);
+        charm.write(xmaxstr);
         charm.pop();
 
     }
 };
 
 Chart.prototype.drawBars = function() {
+    // set scale based on max_size
+    if (this.direction === 'x') {
+        this.scale = this.width/this.max_size;
+    } else {
+        this.scale = this.height/this.max_size;
+    }
+
     var charm = this.charm;
     for (var i = 0; i < this.bars.length; i++) {
         if (this.direction === 'x') {
@@ -126,7 +149,7 @@ Chart.prototype.drawBars = function() {
             if (i != 0) charm.right(this.step);
         }
         charm.push();
-        this.bars[i].draw();
+        this.bars[i].draw(this.scale);
         charm.pop();
     }
     if (this.direction === 'x') charm.down(this.step*this.bars.length+1);
@@ -138,5 +161,5 @@ Chart.prototype.draw = function() {
     this.drawAxes();
     this.labelAxes();
     this.drawBars();
-        this.charm.write('\n\n');
+    this.charm.write('\n\n');
 };

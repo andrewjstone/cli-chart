@@ -56,13 +56,21 @@ config attributes:
 
 ## methods
 
-#### chart.addBar(size, color);
-Add a bar at the next position, which is 'chart.step' spaces away on the axis perpendicular to 'chart.direction'.
+#### chart.addBar(size, color)
+Manually add a bar at the next position, which is 'chart.step' spaces away on the axis perpendicular to 'chart.direction'.
 
-  * size - size of the bar in nominal units
+  * size - Size of the bar in nominal units
   * color - Ansi color string - 'white','red','blue', etc...
 
-#### chart.draw();
+
+### chart.bucketize(data, min, max)
+Instead of manually adding bars with addBar() you can just add your data and allow cli-chart to automatically put data in buckets based on the minimum and maximum size of the data. The number of buckets is equal to the width or height(based on direction) of the chart in characters divided by the step size. Data is sorted from min to max when bucketized. Size is automatically scaled to fit the bars in the graph and label the axis of the chart direction.
+
+  * data - An array of values to chart
+  * min  - The minimum value of this data in nominal units
+  * max - The maximum value of this data in nominal units
+
+#### chart.draw()
 Draw the chart consisting of the bars created with chart.addBar().
 
 
