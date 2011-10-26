@@ -48,7 +48,6 @@ Chart.prototype.bucketize = function(data, min, max) {
     });
     var size = 0;
     var bucket_ct = 0;
-    var max_size = 0;
     for (var i = 0; i < data.length; i++) {
         if (data[i] > min+bucketWidth*(bucket_ct+1)) {
             this.addBar(size);
