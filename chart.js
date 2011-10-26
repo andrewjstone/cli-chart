@@ -33,19 +33,19 @@ var Chart = module.exports = function(config) {
     this.max_size = 0;
 };
 
-// min and max here must be in the same units as data. This is different from 
-// xmin, xmax, ymin, ymax in that those are for labels and may be in different units.
-Chart.prototype.bucketize = function(data, min, max) {
+Chart.prototype.bucketize = function(data) {
     var numBuckets = 0;
     if (this.direction === 'x') {
         numBuckets = Math.floor(this.height/this.step);
     } else {
         numBuckets = Math.floor(this.width/this.step);
     }
-    var bucketWidth = (max - min)/numBuckets;
     data.sort(function(a, b) {
         return a - b;
     });
+    var max = data[data.length-1];
+    var min = data[0];
+    var bucketWidth = (max - min)/numBuckets;
     var size = 0;
     var bucket_ct = 0;
     for (var i = 0; i < data.length; i++) {

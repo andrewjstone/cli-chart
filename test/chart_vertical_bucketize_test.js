@@ -11,7 +11,7 @@ for (var i = 0; i < 1000; i++) {
     data.push(date);
 }
 
-chart.bucketize(data, min, max);
+chart.bucketize(data);
 chart.draw();
 process.exit();
 
