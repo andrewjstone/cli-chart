@@ -64,9 +64,11 @@ Manually add a bar at the next position, which is 'chart.step' spaces away on th
 
 
 ### chart.bucketize(data)
-Instead of manually adding bars with addBar() you can just add your data and allow cli-chart to automatically put data in buckets based on the values of the data. The number of buckets is equal to the width or height(based on direction) in characters of the chart divided by the step size. Data is sorted from min to max when bucketized. Size is automatically scaled to fit the bars in the graph and label the axis of the chart direction.
+Instead of manually adding bars with addBar() you can just add your data and allow cli-chart to automatically put data in buckets based on the values of the data. The number of buckets is equal to the width or height(based on direction) in characters of the chart divided by the step size. Data is sorted from min to max when bucketized. Size is automatically scaled to fit the bars in the graph and label the axis of the chart direction. min and max parameters are optional, but useful for small or sparse arrays of data where the data won't fill out every bar on the graph.
 
   * data - An array of values to chart
+  * min - The minimum value for the chart to plot (optional)
+  * max - The maximum value for the chart to plot (optional)
 
 See the bucketize example [here](https://github.com/andrewjstone/cli-chart/blob/master/test/chart_vertical_bucketize_test.js) .
 

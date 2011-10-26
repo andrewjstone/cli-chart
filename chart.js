@@ -33,7 +33,7 @@ var Chart = module.exports = function(config) {
     this.max_size = 0;
 };
 
-Chart.prototype.bucketize = function(data) {
+Chart.prototype.bucketize = function(data, min, max) {
     var numBuckets = 0;
     if (this.direction === 'x') {
         numBuckets = Math.floor(this.height/this.step);
@@ -43,20 +43,20 @@ Chart.prototype.bucketize = function(data) {
     data.sort(function(a, b) {
         return a - b;
     });
-    var max = data[data.length-1];
-    var min = data[0];
+    if (!max) max = data[data.length-1];
+    if (!min) min = data[0];
     var bucketWidth = (max - min)/numBuckets;
     var size = 0;
     var bucket_ct = 0;
-    for (var i = 0; i < data.length; i++) {
-        if (data[i] > min+bucketWidth*(bucket_ct+1)) {
-            this.addBar(size);
-            bucket_ct++;
-            size = 0;
+    var i = 0;
+    for (var j = 0; j < numBuckets; j++) {
+        while (data[i] < min+bucketWidth*(j+1)) {
+            size++;
+            i++;
         }
-        size++;
+        this.addBar(size);
+        size = 0;
     }
-    this.addBar(size);
 };
 
 Chart.prototype.addBar = function(size, color) {
