@@ -68,7 +68,7 @@ Instead of manually adding bars with addBar() you can just add your data and all
 
   * data - An array of values to chart
 
-See the bucketize example (here)[https://github.com/andrewjstone/cli-chart/blob/master/test/chart_vertical_bucketize_test.js] .
+See the bucketize example [here](https://github.com/andrewjstone/cli-chart/blob/master/test/chart_vertical_bucketize_test.js) .
 
 ### chart.draw()
 Draw the chart consisting of the bars created with chart.addBar().
