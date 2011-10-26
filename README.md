@@ -56,7 +56,7 @@ config attributes:
 
 ## methods
 
-#### chart.addBar(size, color)
+### chart.addBar(size, color)
 Manually add a bar at the next position, which is 'chart.step' spaces away on the axis perpendicular to 'chart.direction'.
 
   * size - Size of the bar in nominal units
@@ -70,7 +70,7 @@ Instead of manually adding bars with addBar() you can just add your data and all
   * min  - The minimum value of this data in nominal units
   * max - The maximum value of this data in nominal units
 
-#### chart.draw()
+### chart.draw()
 Draw the chart consisting of the bars created with chart.addBar().
 
 
