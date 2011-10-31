@@ -54,14 +54,15 @@ Chart.prototype.bucketize = function(data, min, max) {
             size++;
             i++;
         }
-        this.addBar(size);
+	var opts = {size: size};
+        this.addBar(opts);
         size = 0;
     }
 };
 
-Chart.prototype.addBar = function(size, color) {
-    if (size > this.max_size) this.max_size = size;
-    this.bars.push(new Bar(this, size, color));
+Chart.prototype.addBar = function(opts) {
+    if (opts.size > this.max_size) this.max_size = opts.size;
+    this.bars.push(new Bar(this, opts));
     return this;
 };
 
@@ -75,7 +76,7 @@ Chart.prototype.drawAxes = function() {
         charm.write('|');
     }
 
-    // At the bottom of the terminal weird things happen with vertical spacing. 
+    // At the bottom of the terminal weird things happen with vertical spacing.
     // Scroll a couple lines down then come back up before drawing the bottom axis
     charm.write('\n\n');
     charm.up(2);
@@ -103,7 +104,7 @@ Chart.prototype.labelAxes = function() {
         charm.write(yminstr);
         // move all the way to the left of the screen on the x axis
         charm.left(this.lmargin-2);
-        
+
         // move half way up the y axis
         charm.up(this.height/2);
         charm.write(this.ylabel);
