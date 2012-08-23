@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/andrewjstone/cli-chart.png)](http://travis-ci.org/andrewjstone/cli-chart)
 # cli-chart
 
 Create color bar charts in the terminal using node.js!
