@@ -1,7 +1,7 @@
 {
     "name": "cli-chart",
     "description": "Ansi color Bar Charts in your terminal with node.js!",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "author": {
         "name": "Andrew J. Stone",
         "email": "andrew.stone@bozuko.com"

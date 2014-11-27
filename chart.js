@@ -61,6 +61,11 @@ Chart.prototype.bucketize = function(data, min, max) {
 };
 
 Chart.prototype.addBar = function(opts) {
+    if (arguments.length == 2) {
+        opts = {size: arguments[0], color: arguments[1]};
+    } else if (typeof opts == 'number') {
+        opts = {size: opts};
+    }
     if (opts.size > this.max_size) this.max_size = opts.size;
     this.bars.push(new Bar(this, opts));
     return this;
